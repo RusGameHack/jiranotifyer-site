@@ -1,0 +1,739 @@
+---
+interface Props {
+  initialTab?: 'main' | 'general' | 'notifications' | 'statistics';
+  interactive?: boolean;
+  compact?: boolean;
+}
+
+const {
+  initialTab = 'main',
+  interactive = true,
+  compact = false,
+} = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<div class:list={['extension-frame', { 'is-compact': compact }]} data-component="extension-mockup">
+  <div class="mockup-window">
+    <!-- Window Titlebar / Chrome bar -->
+    <div class="window-chrome">
+      <div class="chrome-dots" aria-hidden="true">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+      </div>
+      <div class="chrome-title">JiraNotifyer &bull; Расширение браузера</div>
+      <div class="chrome-badge">Manifest V3</div>
+    </div>
+
+    <!-- Extension Popup Container -->
+    <div class="popup-container">
+      <!-- Popup Header -->
+      <div class="popup-header">
+        <div class="popup-logo-icon">
+          <img src={`${baseUrl}favicon.svg`} alt="" width="20" height="20" />
+        </div>
+        <div class="popup-header-text">
+          <div class="popup-title">Jira Sound Notifier</div>
+          <div class="popup-subtitle">Уведомления о новых задачах Jira</div>
+        </div>
+        <div class="popup-status-indicator">
+          <span class="status-dot connected" aria-hidden="true"></span>
+          <span class="status-label">Подключено</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="mockup-tabs" role="tablist" aria-label="Вкладки расширения">
+        <button
+          type="button"
+          class:list={['mockup-tab', { active: initialTab === 'main' }]}
+          role="tab"
+          aria-selected={initialTab === 'main'}
+          aria-controls="panel-main"
+          data-tab-target="main"
+          disabled={!interactive}
+        >
+          Основные
+        </button>
+        <button
+          type="button"
+          class:list={['mockup-tab', { active: initialTab === 'general' }]}
+          role="tab"
+          aria-selected={initialTab === 'general'}
+          aria-controls="panel-general"
+          data-tab-target="general"
+          disabled={!interactive}
+        >
+          Общие
+        </button>
+        <button
+          type="button"
+          class:list={['mockup-tab', { active: initialTab === 'notifications' }]}
+          role="tab"
+          aria-selected={initialTab === 'notifications'}
+          aria-controls="panel-notifications"
+          data-tab-target="notifications"
+          disabled={!interactive}
+        >
+          Уведомления
+        </button>
+        <button
+          type="button"
+          class:list={['mockup-tab', { active: initialTab === 'statistics' }]}
+          role="tab"
+          aria-selected={initialTab === 'statistics'}
+          aria-controls="panel-statistics"
+          data-tab-target="statistics"
+          disabled={!interactive}
+        >
+          Статистика
+        </button>
+      </div>
+
+      <!-- Tab Content: Основные -->
+      <div
+        id="panel-main"
+        class:list={['tab-panel', { active: initialTab === 'main' }]}
+        role="tabpanel"
+        data-panel="main"
+      >
+        <div class="mock-card">
+          <div class="mock-card-title">Подключение к Jira</div>
+          <div class="mock-field">
+            <span class="mock-label">URL Jira</span>
+            <div class="mock-input-wrap">
+              <svg class="mock-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span class="mock-input-value">https://jira.company.example</span>
+            </div>
+            <div class="mock-hint">Используется адрес вашей корпоративной Jira</div>
+          </div>
+        </div>
+
+        <div class="mock-card">
+          <div class="mock-card-title">Состояние подключения</div>
+          <div class="mock-row">
+            <span class="mock-row-label">Статус синхронизации</span>
+            <span class="mock-row-value mock-val-active">
+              <span class="mock-mini-dot"></span>
+              Активно
+            </span>
+          </div>
+          <div class="mock-row">
+            <span class="mock-row-label">Последняя проверка</span>
+            <span class="mock-row-value">Сегодня, 14:32:00</span>
+          </div>
+          <div class="mock-row">
+            <span class="mock-row-label">Найдено задач</span>
+            <span class="mock-row-value">3 назначения</span>
+          </div>
+        </div>
+
+        <div class="mock-card-action">
+          <button type="button" class="mock-btn-action" tabindex="-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            Проверить сейчас
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content: Общие -->
+      <div
+        id="panel-general"
+        class:list={['tab-panel', { active: initialTab === 'general' }]}
+        role="tabpanel"
+        data-panel="general"
+      >
+        <div class="mock-card">
+          <div class="mock-card-title">Интервал проверки</div>
+          <div class="mock-field">
+            <div class="mock-input-wrap">
+              <svg class="mock-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span class="mock-input-value">60</span>
+              <span class="mock-input-suffix">секунд</span>
+            </div>
+            <div class="mock-hint">Минимальный период: 30 секунд</div>
+          </div>
+        </div>
+
+        <div class="mock-card">
+          <div class="mock-card-title">Звуковые сигналы</div>
+          <div class="mock-toggle-row">
+            <span class="mock-toggle-label">Воспроизводить звук</span>
+            <div class="mock-switch is-checked" aria-hidden="true"></div>
+          </div>
+          <div class="mock-sound-box">
+            <div class="mock-sound-file">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+              </svg>
+              <span>Звук по умолчанию (clean-chime.mp3)</span>
+            </div>
+            <div class="mock-sound-actions">
+              <span class="mock-chip-btn">Выбрать аудиофайл</span>
+              <span class="mock-chip-btn secondary">Проверить</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Уведомления -->
+      <div
+        id="panel-notifications"
+        class:list={['tab-panel', { active: initialTab === 'notifications' }]}
+        role="tabpanel"
+        data-panel="notifications"
+      >
+        <div class="mock-card">
+          <div class="mock-card-title">Ограничение по времени</div>
+          <div class="mock-toggle-row">
+            <span class="mock-toggle-label">Тихие часы вне графика</span>
+            <div class="mock-switch is-checked" aria-hidden="true"></div>
+          </div>
+          <div class="mock-time-range">
+            <div class="mock-time-col">
+              <span class="mock-time-label">с</span>
+              <div class="mock-time-val">09:00</div>
+            </div>
+            <span class="mock-time-sep">&mdash;</span>
+            <div class="mock-time-col">
+              <span class="mock-time-label">до</span>
+              <div class="mock-time-val">18:00</div>
+            </div>
+          </div>
+          <div class="mock-hint">Звук включается только в рабочий интервал</div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Статистика -->
+      <div
+        id="panel-statistics"
+        class:list={['tab-panel', { active: initialTab === 'statistics' }]}
+        role="tabpanel"
+        data-panel="statistics"
+      >
+        <div class="mock-card">
+          <div class="mock-card-title">Персональные показатели</div>
+          <div class="mock-stat-notice">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <div>
+              <div class="notice-head">Модуль в разработке</div>
+              <div class="notice-text">Показатели предварительные и уточняются по мере сбора локальных метрик.</div>
+            </div>
+          </div>
+          <div class="mock-stat-grid">
+            <div class="mock-stat-box">
+              <div class="mock-stat-num">4</div>
+              <div class="mock-stat-desc">В работе</div>
+            </div>
+            <div class="mock-stat-box">
+              <div class="mock-stat-num">2</div>
+              <div class="mock-stat-desc">На проверке</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .extension-frame {
+    display: inline-block;
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+  }
+
+  .mockup-window {
+    background: #FFFFFF;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-mockup);
+    overflow: hidden;
+    text-align: left;
+  }
+
+  /* Titlebar */
+  .window-chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #F8FAFC;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .chrome-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-red { background: #FF5F56; }
+  .dot-yellow { background: #FFBD2E; }
+  .dot-green { background: #27C93F; }
+
+  .chrome-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .chrome-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #E2E8F0;
+    color: var(--color-text-body);
+  }
+
+  /* Popup Body */
+  .popup-container {
+    padding: 16px;
+    background: #F8F9FB;
+    min-height: 420px;
+  }
+
+  .popup-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .popup-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--color-primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .popup-header-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .popup-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    line-height: 1.2;
+  }
+
+  .popup-subtitle {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+  }
+
+  .popup-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-success);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .status-dot.connected {
+    background: var(--color-success);
+    box-shadow: 0 0 4px rgba(22, 163, 74, 0.4);
+  }
+
+  /* Tabs */
+  .mockup-tabs {
+    display: flex;
+    border-bottom: 2px solid #E6E8EC;
+    margin-bottom: 14px;
+  }
+
+  .mockup-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+    white-space: nowrap;
+  }
+
+  .mockup-tab:hover {
+    color: var(--color-text-main);
+  }
+
+  .mockup-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  /* Tab Panels */
+  .tab-panel {
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  /* Mock Cards */
+  .mock-card {
+    background: #FFFFFF;
+    border: 1px solid #E6E8EC;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .mock-card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 10px;
+  }
+
+  .mock-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mock-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .mock-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    background: #FFFFFF;
+    font-size: 12px;
+  }
+
+  .mock-input-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .mock-input-value {
+    color: var(--color-text-main);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .mock-input-suffix {
+    color: var(--color-text-muted);
+    font-size: 11px;
+  }
+
+  .mock-hint {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+  }
+
+  .mock-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 12px;
+    border-bottom: 1px solid #F1F5F9;
+  }
+
+  .mock-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .mock-row:first-of-type {
+    padding-top: 0;
+  }
+
+  .mock-row-label {
+    color: var(--color-text-muted);
+  }
+
+  .mock-row-value {
+    font-weight: 500;
+    color: var(--color-text-main);
+  }
+
+  .mock-val-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-success);
+  }
+
+  .mock-mini-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-success);
+  }
+
+  .mock-card-action {
+    display: flex;
+  }
+
+  .mock-btn-action {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-main);
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    cursor: default;
+  }
+
+  /* Toggles & Times */
+  .mock-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .mock-toggle-label {
+    font-size: 12px;
+    color: var(--color-text-main);
+  }
+
+  .mock-switch {
+    width: 34px;
+    height: 20px;
+    background: #CBD5E1;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .mock-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .mock-switch.is-checked {
+    background: var(--color-primary);
+  }
+
+  .mock-switch.is-checked::after {
+    transform: translateX(14px);
+  }
+
+  .mock-sound-box {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+
+  .mock-sound-file {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--color-text-body);
+    margin-bottom: 8px;
+  }
+
+  .mock-sound-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mock-chip-btn {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 11px;
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 4px;
+    color: var(--color-text-main);
+  }
+
+  .mock-chip-btn.secondary {
+    color: var(--color-text-muted);
+  }
+
+  .mock-time-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .mock-time-col {
+    flex: 1;
+  }
+
+  .mock-time-label {
+    display: block;
+    font-size: 10px;
+    color: var(--color-text-muted);
+    margin-bottom: 2px;
+  }
+
+  .mock-time-val {
+    padding: 6px 10px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-main);
+    text-align: center;
+  }
+
+  .mock-time-sep {
+    color: var(--color-text-muted);
+    padding-top: 12px;
+  }
+
+  /* Stats Mock */
+  .mock-stat-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--color-primary-light);
+    border: 1px solid var(--color-primary-border);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--color-primary-hover);
+    margin-bottom: 10px;
+  }
+
+  .notice-head {
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .notice-text {
+    line-height: 1.35;
+    color: var(--color-text-body);
+  }
+
+  .mock-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .mock-stat-box {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .mock-stat-num {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    line-height: 1.2;
+  }
+
+  .mock-stat-desc {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+  }
+</style>
+
+<script>
+  function setupMockupTabs() {
+    const mockups = document.querySelectorAll('[data-component="extension-mockup"]');
+    mockups.forEach((mockup) => {
+      const tabs = mockup.querySelectorAll<HTMLButtonElement>('.mockup-tab');
+      const panels = mockup.querySelectorAll<HTMLElement>('.tab-panel');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.tabTarget;
+          if (!target) return;
+
+          tabs.forEach((t) => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          panels.forEach((p) => {
+            p.classList.remove('active');
+          });
+
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+          const panel = mockup.querySelector<HTMLElement>(`[data-panel="${target}"]`);
+          if (panel) {
+            panel.classList.add('active');
+          }
+        });
+      });
+    });
+  }
+
+  setupMockupTabs();
+  document.addEventListener('astro:page-load', setupMockupTabs);
+</script>

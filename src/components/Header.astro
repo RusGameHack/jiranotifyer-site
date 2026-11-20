@@ -1,95 +1,258 @@
 ---
+import { CONFIG, isChromeWebStorePublished, isTelegramConfigured } from '../config';
+
 const baseUrl = import.meta.env.BASE_URL;
 const homeUrl = baseUrl;
 const privacyUrl = `${baseUrl}privacy/`;
+const featuresUrl = `${baseUrl}#features`;
+const howItWorksUrl = `${baseUrl}#how-it-works`;
 ---
 
 <header class="site-header">
   <div class="container header-container">
-    <a href={homeUrl} class="logo">
-      <img src={`${baseUrl}favicon.svg`} alt="JiraNotifyer Logo" width="32" height="32" class="logo-icon" />
-      <span class="logo-text">JiraNotifyer</span>
+    <a href={homeUrl} class="logo" aria-label="JiraNotifyer на главную">
+      <img
+        src={`${baseUrl}favicon.svg`}
+        alt=""
+        width="28"
+        height="28"
+        class="logo-icon"
+      />
+      <span class="logo-name">JiraNotifyer</span>
     </a>
-    <nav class="nav">
-      <a href={homeUrl} class="nav-link">Главная</a>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-desktop" aria-label="Основная навигация">
+      <a href={featuresUrl} class="nav-link">Возможности</a>
+      <a href={howItWorksUrl} class="nav-link">Как работает</a>
       <a href={privacyUrl} class="nav-link">Конфиденциальность</a>
-      <a
-        href="https://github.com/RusGameHack/jiranotifyer-site"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="nav-link"
-      >
-        GitHub
-      </a>
-      <a
-        href="#install"
-        class="btn btn-primary btn-sm"
-      >
-        Установить
-      </a>
+      {isTelegramConfigured ? (
+        <a
+          href={CONFIG.TELEGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-link"
+        >
+          Telegram
+        </a>
+      ) : null}
+      {isChromeWebStorePublished ? (
+        <a
+          href={CONFIG.CHROME_WEB_STORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary btn-sm"
+        >
+          Установить
+        </a>
+      ) : (
+        <button
+          type="button"
+          class="btn btn-primary btn-sm js-open-install-modal"
+        >
+          Установить
+        </button>
+      )}
     </nav>
+
+    <!-- Mobile Menu Button -->
+    <button
+      type="button"
+      class="mobile-toggle js-mobile-toggle"
+      aria-label="Открыть меню навигации"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg class="icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+      <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <div class="container mobile-menu-inner">
+      <nav class="mobile-nav" aria-label="Мобильная навигация">
+        <a href={featuresUrl} class="mobile-nav-link js-mobile-link">Возможности</a>
+        <a href={howItWorksUrl} class="mobile-nav-link js-mobile-link">Как работает</a>
+        <a href={privacyUrl} class="mobile-nav-link js-mobile-link">Конфиденциальность</a>
+        {isTelegramConfigured ? (
+          <a
+            href={CONFIG.TELEGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mobile-nav-link"
+          >
+            Telegram
+          </a>
+        ) : null}
+      </nav>
+      <div class="mobile-actions">
+        {isChromeWebStorePublished ? (
+          <a
+            href={CONFIG.CHROME_WEB_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            style="width: 100%;"
+          >
+            Установить JiraNotifyer
+          </a>
+        ) : (
+          <button
+            type="button"
+            class="btn btn-primary js-open-install-modal"
+            style="width: 100%;"
+          >
+            Установить JiraNotifyer
+          </button>
+        )}
+      </div>
+    </div>
   </div>
 </header>
 
 <style>
   .site-header {
-    border-bottom: 1px solid var(--color-surface-border);
-    background-color: rgba(9, 30, 66, 0.85);
-    backdrop-filter: blur(8px);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 50;
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .header-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 68px;
+    height: 64px;
   }
 
   .logo {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 1.25rem;
-    font-weight: 700;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 600;
     color: var(--color-text-main);
   }
 
   .logo-icon {
     display: block;
-    border-radius: 8px;
+    border-radius: 6px;
   }
 
-  .nav {
+  .logo-name {
+    letter-spacing: -0.01em;
+  }
+
+  .nav-desktop {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 24px;
   }
 
   .nav-link {
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
+    font-size: 14px;
     font-weight: 500;
-    transition: color var(--transition-normal);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) ease;
   }
 
   .nav-link:hover {
-    color: #ffffff;
+    color: var(--color-text-main);
   }
 
-  .btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
+  .mobile-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-main);
+    cursor: pointer;
   }
 
-  @media (max-width: 640px) {
-    .nav {
-      gap: 1rem;
-    }
-    .btn-sm {
+  .mobile-toggle .icon-close {
+    display: none;
+  }
+
+  .mobile-toggle[aria-expanded="true"] .icon-menu {
+    display: none;
+  }
+
+  .mobile-toggle[aria-expanded="true"] .icon-close {
+    display: block;
+  }
+
+  .mobile-menu {
+    border-top: 1px solid var(--color-border);
+    background: #FFFFFF;
+    box-shadow: var(--shadow-md);
+  }
+
+  .mobile-menu-inner {
+    padding-top: 16px;
+    padding-bottom: 20px;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-nav-link {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-main);
+    padding: 6px 0;
+  }
+
+  @media (max-width: 768px) {
+    .nav-desktop {
       display: none;
+    }
+    .mobile-toggle {
+      display: inline-flex;
     }
   }
 </style>
+
+<script>
+  function initMobileMenu() {
+    const toggle = document.querySelector('.js-mobile-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!isExpanded));
+      menu.hidden = isExpanded;
+    });
+
+    // Close on link click
+    const links = menu.querySelectorAll('.js-mobile-link');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        menu.hidden = true;
+      });
+    });
+  }
+
+  initMobileMenu();
+  document.addEventListener('astro:page-load', initMobileMenu);
+</script>

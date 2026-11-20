@@ -2,73 +2,418 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import FeatureCard from '../components/FeatureCard.astro';
+import ExtensionMockup from '../components/ExtensionMockup.astro';
+import { CONFIG, isChromeWebStorePublished } from '../config';
 
 const baseUrl = import.meta.env.BASE_URL;
 const privacyUrl = `${baseUrl}privacy/`;
 ---
 
 <BaseLayout
-  title="Официальный сайт"
-  description="JiraNotifyer — умное браузерное расширение для мгновенных звуковых уведомлений при назначении задач в Jira."
+  title="Уведомления о задачах Jira"
+  description="JiraNotifyer следит за назначениями, статусами и комментариями к задачам в Jira. Звуковые оповещения и локальная работа без сторонних серверов."
 >
   <Header />
 
   <main>
-    <!-- Hero Section -->
+    <!-- 1. Hero Section (Two-column layout) -->
     <section class="hero-section">
-      <div class="container hero-container">
-        <div class="badge hero-badge">Официальный сайт расширения</div>
-        <h1 class="hero-title">
-          Не пропускайте важные задачи в <span class="text-gradient">Jira</span>
-        </h1>
-        <p class="hero-subtitle">
-          JiraNotifyer воспроизводит настраиваемый звуковой сигнал и показывает всплывающее уведомление в момент,
-          когда задача назначается на вас или изменяется её статус.
-        </p>
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            Изменения в Jira &mdash; без постоянных проверок
+          </h1>
+          <p class="hero-subtitle">
+            JiraNotifyer следит за назначениями, статусами и комментариями к задачам. Когда происходит важное событие, расширение показывает уведомление и может воспроизвести выбранный вами звук.
+          </p>
 
-        <div class="hero-actions" id="install">
-          <a
-            href="https://chromewebstore.google.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary"
-          >
-            Установить для Chrome
-          </a>
-          <a href={privacyUrl} class="btn btn-secondary">
-            Политика конфиденциальности
-          </a>
+          <div class="hero-actions">
+            {isChromeWebStorePublished ? (
+              <a
+                href={CONFIG.CHROME_WEB_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
+              >
+                Установить JiraNotifyer
+              </a>
+            ) : (
+              <button
+                type="button"
+                class="btn btn-primary js-open-install-modal"
+              >
+                Установить JiraNotifyer
+              </button>
+            )}
+            <a href="#how-it-works" class="btn btn-secondary">
+              Как это работает
+            </a>
+          </div>
+
+          <div class="hero-meta">
+            <span class="meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              Локальная обработка в браузере
+            </span>
+            <span class="meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Сессия вашей Jira
+            </span>
+          </div>
+        </div>
+
+        <div class="hero-preview">
+          <ExtensionMockup initialTab="main" interactive={true} />
         </div>
       </div>
     </section>
 
-    <!-- Key Features Preview -->
-    <section class="features-section">
+    <!-- 2. Возможности (Features) -->
+    <section id="features" class="section features-section">
       <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Ключевые возможности</h2>
-          <p class="section-subtitle">
-            Простое, легкое и приватное решение для эффективной командной работы.
+        <div class="section-heading">
+          <h2 class="section-title">Возможности расширения</h2>
+          <p class="section-desc">
+            Инструменты для своевременного реагирования на задачи без отвлечения от рабочего процесса.
           </p>
         </div>
 
-        <div class="features-grid">
-          <FeatureCard
-            icon="🔔"
-            title="Звуковые сигналы"
-            description="Различные звуковые темы для назначений и обновлений статусов, чтобы моментально реагировать на работу."
-          />
-          <FeatureCard
-            icon="🔒"
-            title="Конфиденциальность"
-            description="Никаких внешних серверов. Расширение опрашивает только вашу корпоративную Jira через текущую браузерную сессию."
-          />
-          <FeatureCard
-            icon="⚙️"
-            title="Гибкая настройка"
-            description="Настройка интервала опроса, фильтров проектов, отключения в нерабочее время и громкости сигналов."
-          />
+        <!-- 2 Large Feature Blocks -->
+        <div class="feature-large-grid">
+          <div class="feature-large-card">
+            <div class="feature-large-content">
+              <div class="feature-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <h3 class="feature-large-title">Уведомления о задачах и настраиваемый звук</h3>
+              <p class="feature-large-text">
+                Отслеживание назначения новых задач, смены статусов и комментариев. Вы можете использовать стандартный звуковой сигнал или загрузить собственный аудиофайл в формате MP3, WAV или OGG.
+              </p>
+              <ul class="feature-checklist">
+                <li>Моментальные системные уведомления браузера</li>
+                <li>Загрузка своего аудиофайла любого типа</li>
+                <li>Возможность отключения звука одним переключателем</li>
+              </ul>
+            </div>
+            <div class="feature-large-visual">
+              <div class="visual-sound-card">
+                <div class="visual-sound-row">
+                  <div class="visual-sound-name">clean-chime.mp3</div>
+                  <span class="visual-tag">Активный звук</span>
+                </div>
+                <div class="visual-sound-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-large-card">
+            <div class="feature-large-content">
+              <div class="feature-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                </svg>
+              </div>
+              <h3 class="feature-large-title">Фоновая синхронизация и статус подключения</h3>
+              <p class="feature-large-text">
+                Расширение периодически опрашивает настроенный адрес Jira через фоновый Service Worker браузера. На панели всегда виден статус последней проверки и количество найденных задач.
+              </p>
+              <ul class="feature-checklist">
+                <li>Настраиваемый период проверки (от 30 секунд)</li>
+                <li>Индикатор соединения в реальном времени</li>
+                <li>Кнопка ручной внеочередной проверки</li>
+              </ul>
+            </div>
+            <div class="feature-large-visual">
+              <div class="visual-status-card">
+                <div class="visual-status-head">
+                  <span class="status-indicator-live"></span>
+                  <span class="visual-status-title">Синхронизация активна</span>
+                </div>
+                <div class="visual-status-data">
+                  <div>
+                    <span class="visual-meta-k">Интервал:</span>
+                    <span class="visual-meta-v">60 сек</span>
+                  </div>
+                  <div>
+                    <span class="visual-meta-k">Последний опрос:</span>
+                    <span class="visual-meta-v">только что</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compact Sub-features -->
+        <div class="feature-sub-grid">
+          <div class="sub-feature-card">
+            <div class="sub-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h4 class="sub-title">Удобное расписание</h4>
+            <p class="sub-text">
+              Задайте интервал рабочего дня (например, с 09:00 до 18:00), чтобы звуковые оповещения не беспокоили вас в нерабочее время.
+            </p>
+          </div>
+
+          <div class="sub-feature-card">
+            <div class="sub-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h4 class="sub-title">Сессия браузера</h4>
+            <p class="sub-text">
+              Не нужно передавать логин и пароль: расширение использует уже открытую сессию Jira в вашем браузере.
+            </p>
+          </div>
+
+          <div class="sub-feature-card">
+            <div class="sub-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <h4 class="sub-title">Персональная статистика</h4>
+            <p class="sub-text">
+              Сводка по закрытым и переоткрытым задачам. Модуль находится в активной разработке, показатели являются предварительными.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Демонстрация интерфейса (Interface Showcase) -->
+    <section class="section showcase-section">
+      <div class="container">
+        <div class="section-heading">
+          <h2 class="section-title">Интерфейс расширения</h2>
+          <p class="section-desc">
+            Компактное всплывающее окно со всеми настройками прямо в панели инструментов браузера.
+          </p>
+        </div>
+
+        <div class="showcase-wrapper">
+          <ExtensionMockup initialTab="main" interactive={true} />
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Как начать работу (Getting Started) -->
+    <section id="how-it-works" class="section steps-section">
+      <div class="container">
+        <div class="section-heading">
+          <h2 class="section-title">Как начать работу</h2>
+          <p class="section-desc">
+            Простая настройка в три последовательных шага без необходимости регистрировать сторонние аккаунты.
+          </p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number" aria-hidden="true">1</div>
+            <h3 class="step-title">Установите расширение</h3>
+            <p class="step-text">
+              Добавьте JiraNotifyer в браузер из Chrome Web Store или загрузите распакованное расширение для режима разработчика.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number" aria-hidden="true">2</div>
+            <h3 class="step-title">Укажите адрес Jira</h3>
+            <p class="step-text">
+              Введите URL вашего инстанса Jira (например, https://jira.company.example). Расширение подхватит авторизованную браузерную сессию.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number" aria-hidden="true">3</div>
+            <h3 class="step-title">Настройте оповещения</h3>
+            <p class="step-text">
+              Выберите период проверки, загрузите желаемый аудиосигнал и при необходимости задайте рабочие часы для тихих периодов.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Конфиденциальность (Privacy Overview) -->
+    <section class="section privacy-section">
+      <div class="container">
+        <div class="privacy-box">
+          <div class="privacy-content-left">
+            <h2 class="privacy-title">Ваши данные &mdash; под вашим контролем</h2>
+            <p class="privacy-lead">
+              Мы придерживаемся прозрачной и проверяемой архитектуры: расширение взаимодействует только с вашей Jira и работает локально.
+            </p>
+            <ul class="privacy-facts">
+              <li>
+                <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Прямые запросы: расширение обращается непосредственно к настроенному вами инстансу Jira</span>
+              </li>
+              <li>
+                <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Локальное хранилище: данные задач и метрики хранятся на вашем устройстве</span>
+              </li>
+              <li>
+                <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Настройки в chrome.storage.sync могут синхронизироваться стандартными средствами Chrome</span>
+              </li>
+              <li>
+                <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Отсутствуют сторонние трекеры, аналитика и передача задач разработчику</span>
+              </li>
+            </ul>
+            <div class="privacy-action">
+              <a href={privacyUrl} class="btn btn-secondary">
+                Читать полную Политику конфиденциальности &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. FAQ Section -->
+    <section class="section faq-section">
+      <div class="container faq-container">
+        <div class="section-heading">
+          <h2 class="section-title">Часто задаваемые вопросы</h2>
+          <p class="section-desc">
+            Ответы на ключевые вопросы об устройстве и работе расширения.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary class="faq-question">
+              Как подключить Jira?
+              <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              Достаточно открыть вкладку «Основные» во всплывающем окне расширения и указать базовый URL вашей системы (например, https://jira.yourcompany.com). Расширение проверит доступность и начнет мониторинг.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              Нужно ли вводить пароль?
+              <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              Нет, пароль вводить не требуется. Расширение использует стандартные cookie авторизованной сессии Jira, уже открытой в вашем браузере.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              Можно ли использовать собственный звук?
+              <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              Да. На вкладке «Общие» можно нажать кнопку «Выбрать файл» и загрузить любой аудиофайл в формате MP3, WAV или OGG. Файл сохраняется локально в памяти расширения.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              Работают ли уведомления вне рабочего времени?
+              <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              Вы можете настроить тихие часы на вкладке «Уведомления». При включении опции «Ограничение по времени» звуковые сигналы будут воспроизводиться строго в указанном временном диапазоне (например, с 09:00 до 18:00).
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              Где хранятся данные?
+              <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              Все данные сохраняются локально в хранилище вашего профиля Chrome (chrome.storage.local и chrome.storage.sync). Никакие серверы разработчика или промежуточные базы данных не используются.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              Доступна ли статистика?
+              <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              Вкладка статистики доступна в расширении, однако модуль находится в активной разработке. Отображаемые показатели носят предварительный характер и уточняются по мере доработки алгоритмов.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Final Call to Action -->
+    <section class="section cta-section">
+      <div class="container">
+        <div class="cta-card">
+          <h2 class="cta-title">Начните отслеживать задачи без постоянного переключения вкладок</h2>
+          <p class="cta-subtitle">
+            Установите JiraNotifyer и получайте мгновенные звуковые сигналы при изменениях в Jira.
+          </p>
+          <div class="cta-actions">
+            {isChromeWebStorePublished ? (
+              <a
+                href={CONFIG.CHROME_WEB_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
+              >
+                Установить JiraNotifyer
+              </a>
+            ) : (
+              <button
+                type="button"
+                class="btn btn-primary js-open-install-modal"
+              >
+                Установить JiraNotifyer
+              </button>
+            )}
+            <a href={privacyUrl} class="btn btn-secondary">
+              Политика конфиденциальности
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -78,84 +423,555 @@ const privacyUrl = `${baseUrl}privacy/`;
 </BaseLayout>
 
 <style>
-  .hero-section {
-    padding: 5rem 0 4rem;
+  /* Sections common layout */
+  .section {
+    padding: 80px 0;
+  }
+
+  .section-heading {
     text-align: center;
-    background: radial-gradient(circle at 50% 20%, rgba(0, 82, 204, 0.25) 0%, transparent 70%);
+    max-width: 680px;
+    margin: 0 auto 48px;
   }
 
-  .hero-container {
-    max-width: 820px;
+  .section-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
   }
 
-  .hero-badge {
-    margin-bottom: 1.5rem;
+  .section-desc {
+    font-size: 16px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 72px 0 80px;
+    background: #FFFFFF;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-content {
+    max-width: 580px;
   }
 
   .hero-title {
-    font-size: 3rem;
+    font-size: 48px;
     line-height: 1.15;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: -0.02em;
-    margin-bottom: 1.25rem;
-  }
-
-  .text-gradient {
-    background: linear-gradient(135deg, #4c9aff 0%, #00b8d9 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-text-main);
+    margin-bottom: 20px;
   }
 
   .hero-subtitle {
-    font-size: 1.2rem;
-    color: var(--color-text-muted);
+    font-size: 17px;
     line-height: 1.6;
-    margin-bottom: 2rem;
+    color: var(--color-text-body);
+    margin-bottom: 32px;
   }
 
   .hero-actions {
     display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+
+  .meta-item svg {
+    color: var(--color-primary);
+  }
+
+  .hero-preview {
+    display: flex;
     justify-content: center;
-    gap: 1rem;
+  }
+
+  /* Features: 2 Large Cards */
+  .features-section {
+    background: var(--color-bg-subtle);
+  }
+
+  .feature-large-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .feature-large-card {
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .feature-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .feature-large-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .feature-large-text {
+    font-size: 15px;
+    color: var(--color-text-body);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .feature-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--color-text-body);
+  }
+
+  .feature-checklist li {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .feature-checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+  }
+
+  .feature-large-visual {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+  }
+
+  .visual-sound-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .visual-sound-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .visual-sound-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-main);
+  }
+
+  .visual-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #E2E8F0;
+    color: var(--color-text-body);
+  }
+
+  .visual-sound-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 24px;
+  }
+
+  .visual-sound-bars span {
+    width: 6px;
+    background: var(--color-primary);
+    border-radius: 2px;
+  }
+
+  .visual-sound-bars span:nth-child(1) { height: 8px; }
+  .visual-sound-bars span:nth-child(2) { height: 16px; }
+  .visual-sound-bars span:nth-child(3) { height: 22px; }
+  .visual-sound-bars span:nth-child(4) { height: 14px; }
+  .visual-sound-bars span:nth-child(5) { height: 20px; }
+  .visual-sound-bars span:nth-child(6) { height: 10px; }
+  .visual-sound-bars span:nth-child(7) { height: 18px; }
+
+  .visual-status-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .visual-status-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-indicator-live {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-success);
+  }
+
+  .visual-status-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-main);
+  }
+
+  .visual-status-data {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .visual-meta-k {
+    color: var(--color-text-muted);
+    margin-right: 4px;
+  }
+
+  .visual-meta-v {
+    font-weight: 500;
+    color: var(--color-text-main);
+  }
+
+  /* Compact Sub-features */
+  .feature-sub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .sub-feature-card {
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .sub-icon {
+    color: var(--color-primary);
+    margin-bottom: 12px;
+  }
+
+  .sub-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 8px;
+  }
+
+  .sub-text {
+    font-size: 14px;
+    color: var(--color-text-body);
+    line-height: 1.5;
+  }
+
+  /* Showcase Section */
+  .showcase-section {
+    background: #FFFFFF;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .showcase-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Steps Section */
+  .steps-section {
+    background: var(--color-bg-subtle);
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .step-card {
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .step-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 10px;
+  }
+
+  .step-text {
+    font-size: 14px;
+    color: var(--color-text-body);
+    line-height: 1.55;
+  }
+
+  /* Privacy Section */
+  .privacy-section {
+    background: #FFFFFF;
+  }
+
+  .privacy-box {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 48px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .privacy-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 12px;
+  }
+
+  .privacy-lead {
+    font-size: 16px;
+    color: var(--color-text-body);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .privacy-facts {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .privacy-facts li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 15px;
+    color: var(--color-text-body);
+    line-height: 1.5;
+  }
+
+  .fact-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-success);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* FAQ Section */
+  .faq-section {
+    background: var(--color-bg-subtle);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-container {
+    max-width: 800px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-item {
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--duration-fast) ease;
+  }
+
+  .faq-item[open] {
+    border-color: #CBD5E1;
+  }
+
+  .faq-question {
+    padding: 18px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-arrow {
+    color: var(--color-text-muted);
+    transition: transform var(--duration-fast) ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] .faq-arrow {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    padding: 0 20px 18px;
+    font-size: 14px;
+    color: var(--color-text-body);
+    line-height: 1.6;
+  }
+
+  /* Final CTA Section */
+  .cta-section {
+    background: #FFFFFF;
+    padding: 72px 0 96px;
+  }
+
+  .cta-card {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 56px 32px;
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+
+  .cta-subtitle {
+    font-size: 16px;
+    color: var(--color-text-muted);
+    margin-bottom: 28px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
     flex-wrap: wrap;
   }
 
-  .features-section {
-    padding: 4rem 0 5rem;
-    border-top: 1px solid var(--color-surface-border);
-  }
-
-  .section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-
-  .section-subtitle {
-    color: var(--color-text-muted);
-    font-size: 1rem;
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-
-  @media (max-width: 840px) {
-    .hero-title {
-      font-size: 2.25rem;
-    }
-    .hero-subtitle {
-      font-size: 1.05rem;
-    }
-    .features-grid {
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .hero-grid {
       grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero-content {
+      max-width: 100%;
+    }
+    .hero-actions {
+      justify-content: center;
+    }
+    .hero-meta {
+      justify-content: center;
+    }
+    .feature-large-grid {
+      grid-template-columns: 1fr;
+    }
+    .feature-sub-grid {
+      grid-template-columns: 1fr;
+    }
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .section {
+      padding: 56px 0;
+    }
+    .hero-title {
+      font-size: 34px;
+    }
+    .section-title {
+      font-size: 26px;
+    }
+    .privacy-box {
+      padding: 28px 20px;
+    }
+    .cta-card {
+      padding: 40px 20px;
     }
   }
 </style>

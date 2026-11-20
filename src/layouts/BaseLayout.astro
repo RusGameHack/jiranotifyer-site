@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { CONFIG, isChromeWebStorePublished } from '../config';
 
 interface Props {
   title: string;
@@ -8,11 +9,11 @@ interface Props {
 
 const {
   title,
-  description = "Официальный сайт браузерного расширения JiraNotifyer — мгновенные звуковые уведомления о назначении задач в Jira.",
+  description = "JiraNotifyer — умное расширение для звуковых и визуальных уведомлений о назначении задач в Jira.",
 } = Astro.props;
 
 const baseUrl = import.meta.env.BASE_URL;
-const siteUrl = Astro.site ?? 'https://rusgamehack.github.io/jiranotifyer-site/';
+const siteUrl = Astro.site ? Astro.site.toString() : CONFIG.SITE_URL;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const faviconUrl = `${baseUrl}favicon.svg`;
 ---
@@ -33,8 +34,79 @@ const faviconUrl = `${baseUrl}favicon.svg`;
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${siteUrl}images/icon128.png`} />
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <slot />
+
+    <!-- Install / Status Dialog -->
+    {!isChromeWebStorePublished && (
+      <div id="install-modal" class="dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+        <div class="dialog-modal">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #D97706;"></span>
+              <h3 id="dialog-title" style="font-size: 16px; font-weight: 600; color: #0F172A;">Ожидание публикации</h3>
+            </div>
+            <button type="button" class="js-close-modal" aria-label="Закрыть" style="background: none; border: none; cursor: pointer; color: #64748B; font-size: 20px; line-height: 1;">&times;</button>
+          </div>
+          <p style="font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 20px;">
+            Расширение JiraNotifyer находится на проверке перед размещением в Chrome Web Store. Ссылка на каталог появится здесь сразу после публикации.
+          </p>
+          <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button type="button" class="btn btn-secondary btn-sm js-close-modal">Понятно</button>
+            <a href={CONFIG.GITHUB_URL} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+              Смотреть GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <script>
+      function setupModal() {
+        const modal = document.getElementById('install-modal');
+        if (!modal) return;
+
+        const openButtons = document.querySelectorAll('.js-open-install-modal');
+        const closeButtons = modal.querySelectorAll('.js-close-modal');
+
+        openButtons.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('open');
+          });
+        });
+
+        closeButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            modal.classList.remove('open');
+          });
+        });
+
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.classList.remove('open');
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('open')) {
+            modal.classList.remove('open');
+          }
+        });
+      }
+
+      setupModal();
+      document.addEventListener('astro:page-load', setupModal);
+    </script>
   </body>
 </html>

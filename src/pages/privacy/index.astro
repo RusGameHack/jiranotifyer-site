@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { CONFIG } from '../../config';
 
 const baseUrl = import.meta.env.BASE_URL;
 const lastUpdated = "20 ноября 2026 г.";
@@ -9,106 +10,131 @@ const lastUpdated = "20 ноября 2026 г.";
 
 <BaseLayout
   title="Политика конфиденциальности"
-  description="Политика конфиденциальности браузерного расширения JiraNotifyer. Прозрачность, локальная обработка данных и отсутствие внешних серверов."
+  description="Политика конфиденциальности расширения JiraNotifyer. Локальная обработка данных, отсутствие внешних аналитических серверов и прозрачные разрешения."
 >
   <Header />
 
-  <main class="privacy-page">
+  <main class="privacy-main">
     <div class="container">
       <div class="privacy-header">
-        <a href={baseUrl} class="back-link">← На главную</a>
-        <h1 class="page-title">Политика конфиденциальности JiraNotifyer</h1>
-        <p class="updated-date">Дата последнего обновления: {lastUpdated}</p>
+        <a href={baseUrl} class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          На главную
+        </a>
+        <h1 class="privacy-heading">Политика конфиденциальности JiraNotifyer</h1>
+        <p class="privacy-date">Дата обновления: {lastUpdated}</p>
       </div>
 
-      <article class="privacy-content">
-        <section class="policy-section">
-          <h2>1. Введение и общие положения</h2>
+      <article class="privacy-body">
+        <section class="policy-block">
+          <h2>1. Введение и базовый принцип</h2>
           <p>
-            Настоящая Политика конфиденциальности описывает, каким образом браузерное расширение <strong>JiraNotifyer</strong> («мы», «расширение») взаимодействует с данными пользователей.
+            Настоящая Политика конфиденциальности определяет порядок обработки информации в браузерном расширении <strong>JiraNotifyer</strong> («расширение», «мы»).
           </p>
           <p>
-            Главный принцип JiraNotifyer — <strong>максимальная конфиденциальность и автономность</strong>. Расширение разработано как локальный инструмент для отслеживания задач в вашем корпоративном или персональном инстансе Jira и функционирует исключительно на стороне вашего браузера.
+            Базовый принцип архитектуры JiraNotifyer &mdash; <strong>локальная обработка и автономность</strong>. Расширение функционирует как инструмент для автоматического отслеживания задач в указанном вами инстансе Jira и выполняется непосредственно в контексте вашего браузера.
           </p>
         </section>
 
-        <section class="policy-section">
-          <h2>2. Какие данные обрабатываются</h2>
+        <section class="policy-block">
+          <h2>2. Обрабатываемые данные и источники</h2>
           <p>
-            Расширение <strong>НЕ собирает, НЕ передает и НЕ сохраняет на сторонних серверах</strong> никакую личную информацию, учетные данные или конфиденциальные данные вашей компании.
+            Расширение <strong>не собирает, не агрегирует и не передает на внешние сервера разработчика</strong> конфиденциальную информацию пользователей:
           </p>
           <ul>
-            <li><strong>Учетные записи:</strong> Мы не запрашиваем и не храним ваши логины и пароли от Jira. Запросы к API выполняются через активную авторизованную сессию в вашем браузере.</li>
-            <li><strong>Идентификаторы задач:</strong> Ключи задач, заголовки и авторы обрабатываются исключительно локально в памяти расширения для формирования звуковых оповещений и уведомлений.</li>
-            <li><strong>Пользовательские настройки:</strong> Выбранная громкость, звуковые темы, интервал опроса сохраняются локально в хранилище вашего браузера (<code>chrome.storage.local</code> или <code>chrome.storage.sync</code>).</li>
+            <li>
+              <strong>Учетные данные:</strong> логины, пароли и токены доступа Jira не запрашиваются и не сохраняются в расширении. Сетевые запросы к REST API Jira выполняются от имени уже открытой и авторизованной сессии в вашем браузере.
+            </li>
+            <li>
+              <strong>Данные задач:</strong> идентификаторы, заголовки, статусы и авторы комментариев запрашиваются напрямую у настроенного инстанса Jira и обрабатываются в оперативной памяти расширения исключительно для отображения системного уведомления и воспроизведения звука.
+            </li>
+            <li>
+              <strong>Пользовательские настройки:</strong> базовый адрес Jira, интервал фонового опроса, включение звука, загруженный звуковой файл и интервал рабочих часов сохраняются во внутренних хранилищах браузера.
+            </li>
+            <li>
+              <strong>Статистика:</strong> агрегированные локальные показатели закрытия задач и переоткрытий хранятся локально в хранилище профиля браузера и не передаются во внешние аналитические системы.
+            </li>
           </ul>
         </section>
 
-        <section class="policy-section">
-          <h2>3. Используемые разрешения браузера (Permissions)</h2>
-          <p>Расширение запрашивает минимальный набор разрешений, необходимый для выполнения его заявленных функций:</p>
-          <div class="perm-table-wrapper">
+        <section class="policy-block">
+          <h2>3. Разрешения расширения (Permissions)</h2>
+          <p>
+            Для выполнения заявленных возможностей расширение запрашивает минимально достаточный набор разрешений Manifest V3:
+          </p>
+          <div class="table-container">
             <table class="perm-table">
               <thead>
                 <tr>
-                  <th>Разрешение</th>
-                  <th>Назначение</th>
+                  <th style="width: 28%;">Разрешение</th>
+                  <th>Назначение и обоснование</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>storage</code></td>
-                  <td>Сохранение настроек расширения (звук, частота опроса, темы) на вашем устройстве.</td>
+                  <td>
+                    Сохранение параметров расширения и локальных метрик в <code>chrome.storage.local</code> и <code>chrome.storage.sync</code>. Если в браузере включена синхронизация Chrome, параметры могут реплицироваться между вашими устройствами стандартными средствами Google Chrome.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>alarms</code></td>
-                  <td>Периодический запуск проверки новых задач в фоне без постоянной загрузки процессора.</td>
+                  <td>
+                    Периодический вызов фонового Service Worker для проверки появления новых задач с заданным вами интервалом (от 30 секунд).
+                  </td>
                 </tr>
                 <tr>
                   <td><code>notifications</code></td>
-                  <td>Отображение системных всплывающих окон при поступлении новой задачи.</td>
+                  <td>
+                    Отображение всплывающих уведомлений операционной системы при изменении статуса задачи, новом назначении или комментарии.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>cookies</code></td>
-                  <td>Проверка наличия активной авторизованной сессии в Jira пользователя.</td>
+                  <td>
+                    Проверка наличия активных cookie авторизации для настроенного домена Jira перед отправкой API-запросов.
+                  </td>
                 </tr>
                 <tr>
                   <td><code>offscreen</code></td>
-                  <td>Воспроизведение звуковых сигналов в современных версиях Manifest V3.</td>
+                  <td>
+                    Воспроизведение пользовательских аудиосигналов в изолированном документе (требование Manifest V3 для воспроизведения звука из фонового Service Worker).
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        <section class="policy-section">
-          <h2>4. Передача данных третьим лицам</h2>
+        <section class="policy-block">
+          <h2>4. Маршруты передачи данных</h2>
           <p>
-            Мы <strong>НЕ передаем</strong> данные третьим лицам, не используем внешние трекеры, рекламные сети, сервисы веб-аналитики или серверные базы данных. Все запросы направляются исключительно на настроенный вами URL инстанса Jira.
+            Все сетевые запросы расширения отправляются <strong>исключительно на адрес инстанса Jira</strong>, указанный пользователем в настройках.
+          </p>
+          <p>
+            В расширении отсутствуют сторонние скрипты, трекеры, телеметрия, счетчики посещаемости или рекламные SDK. Никакие данные о составе задач или действиях пользователя не отправляются разработчику расширения.
           </p>
         </section>
 
-        <section class="policy-section">
+        <section class="policy-block">
           <h2>5. Хранение и удаление данных</h2>
           <p>
-            Все сохраненные параметры хранятся локально в вашем профиле браузера Chrome. При удалении расширения все сохраненные настройки автоматически удаляются браузером без остатка.
+            Все локальные данные и настройки хранятся в профиле браузера пользователя. При удалении расширения через менеджер расширений Chrome все сохраненные данные, настройки и кэшированные аудиофайлы автоматически и безвозвратно удаляются браузером.
           </p>
         </section>
 
-        <section class="policy-section">
-          <h2>6. Изменения в политике конфиденциальности</h2>
+        <section class="policy-block">
+          <h2>6. Обратная связь</h2>
           <p>
-            В случае обновления функционала расширения настоящая Политика может быть обновлена. Актуальная версия всегда публикуется на этой странице.
+            Вопросы и предложения по безопасности или работе расширения вы можете направить через репозиторий проекта на GitHub:
           </p>
-        </section>
-
-        <section class="policy-section">
-          <h2>7. Контакты и обратная связь</h2>
           <p>
-            По всем вопросам, связанным с работой расширения и защитой конфиденциальности, вы можете создать Issue в официальном репозитории:
-            <a href="https://github.com/RusGameHack/jiranotifyer-site/issues" target="_blank" rel="noopener noreferrer">
-              GitHub Issues
-            </a>.
+            <a href={`${CONFIG.GITHUB_URL}/issues`} target="_blank" rel="noopener noreferrer">
+              Создать обращение в GitHub Issues &rarr;
+            </a>
           </p>
         </section>
       </article>
@@ -119,109 +145,134 @@ const lastUpdated = "20 ноября 2026 г.";
 </BaseLayout>
 
 <style>
-  .privacy-page {
-    padding: 3rem 0 5rem;
+  .privacy-main {
+    padding: 56px 0 80px;
+    background: #FFFFFF;
   }
 
   .privacy-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--color-surface-border);
+    max-width: 840px;
+    margin: 0 auto 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .back-link {
-    display: inline-block;
-    margin-bottom: 1rem;
-    font-size: 0.9375rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
     color: var(--color-text-muted);
+    margin-bottom: 16px;
+    transition: color var(--duration-fast) ease;
   }
 
   .back-link:hover {
-    color: #4c9aff;
+    color: var(--color-primary);
   }
 
-  .page-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+  .privacy-heading {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
     color: var(--color-text-main);
+    margin-bottom: 8px;
   }
 
-  .updated-date {
-    color: var(--color-text-subtle);
-    font-size: 0.875rem;
+  .privacy-date {
+    font-size: 14px;
+    color: var(--color-text-muted);
   }
 
-  .privacy-content {
-    max-width: 800px;
+  .privacy-body {
+    max-width: 840px;
+    margin: 0 auto;
+    font-size: 15px;
     line-height: 1.7;
-    color: #d1d5db;
+    color: var(--color-text-body);
   }
 
-  .policy-section {
-    margin-bottom: 2.5rem;
+  .policy-block {
+    margin-bottom: 40px;
   }
 
-  .policy-section h2 {
-    font-size: 1.375rem;
+  .policy-block h2 {
+    font-size: 20px;
     font-weight: 600;
     color: var(--color-text-main);
-    margin-bottom: 1rem;
-    border-left: 4px solid var(--color-primary);
-    padding-left: 0.75rem;
+    margin-bottom: 14px;
+    line-height: 1.35;
   }
 
-  .policy-section p {
-    margin-bottom: 1rem;
+  .policy-block p {
+    margin-bottom: 12px;
   }
 
-  .policy-section ul {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
+  .policy-block ul {
+    margin-left: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .policy-section li {
-    margin-bottom: 0.5rem;
+  .policy-block li {
+    padding-left: 4px;
   }
 
   code {
-    background-color: var(--color-surface-hover);
-    padding: 0.15rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.875em;
-    color: #79e2f2;
-    border: 1px solid var(--color-surface-border);
+    background-color: var(--color-bg-muted);
+    color: var(--color-primary-hover);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    border: 1px solid var(--color-border);
   }
 
-  .perm-table-wrapper {
+  .table-container {
     overflow-x: auto;
-    margin: 1.5rem 0;
+    margin: 16px 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
   }
 
   .perm-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: var(--color-surface);
-    border-radius: var(--border-radius-md);
-    overflow: hidden;
-    border: 1px solid var(--color-surface-border);
+    background: #FFFFFF;
+    font-size: 14px;
+    text-align: left;
   }
 
   .perm-table th,
   .perm-table td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--color-surface-border);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .perm-table tr:last-child td {
+    border-bottom: none;
   }
 
   .perm-table th {
-    background-color: var(--color-surface-hover);
-    color: var(--color-text-main);
+    background: var(--color-bg-subtle);
     font-weight: 600;
-    font-size: 0.875rem;
+    color: var(--color-text-main);
+    font-size: 13px;
   }
 
   .perm-table td {
-    font-size: 0.875rem;
+    color: var(--color-text-body);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 640px) {
+    .privacy-heading {
+      font-size: 28px;
+    }
   }
 </style>
