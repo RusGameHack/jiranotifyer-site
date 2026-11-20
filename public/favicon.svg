@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0052CC"/>
+      <stop offset="100%" stop-color="#2684FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="12" fill="url(#bg-grad)"/>
+  <!-- Bell / Soundwave Icon -->
+  <path d="M24 10C18.48 10 14 14.48 14 20V26L11 29V31H37V29L34 26V20C34 14.48 29.52 10 24 10Z" fill="#FFFFFF"/>
+  <path d="M20 33C20 35.21 21.79 37 24 37C26.21 37 28 35.21 28 33H20Z" fill="#FFFFFF"/>
+  <circle cx="34" cy="14" r="5" fill="#36B37E" stroke="#FFFFFF" stroke-width="2"/>
+</svg>

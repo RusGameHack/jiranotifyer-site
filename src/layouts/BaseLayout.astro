@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Официальный сайт браузерного расширения JiraNotifyer — мгновенные звуковые уведомления о назначении задач в Jira.",
+} = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL;
+const siteUrl = Astro.site ?? 'https://rusgamehack.github.io/jiranotifyer-site/';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const faviconUrl = `${baseUrl}favicon.svg`;
+---
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} — JiraNotifyer</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={`${title} — JiraNotifyer`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

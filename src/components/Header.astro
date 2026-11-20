@@ -1,0 +1,95 @@
+---
+const baseUrl = import.meta.env.BASE_URL;
+const homeUrl = baseUrl;
+const privacyUrl = `${baseUrl}privacy/`;
+---
+
+<header class="site-header">
+  <div class="container header-container">
+    <a href={homeUrl} class="logo">
+      <img src={`${baseUrl}favicon.svg`} alt="JiraNotifyer Logo" width="32" height="32" class="logo-icon" />
+      <span class="logo-text">JiraNotifyer</span>
+    </a>
+    <nav class="nav">
+      <a href={homeUrl} class="nav-link">Главная</a>
+      <a href={privacyUrl} class="nav-link">Конфиденциальность</a>
+      <a
+        href="https://github.com/RusGameHack/jiranotifyer-site"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="nav-link"
+      >
+        GitHub
+      </a>
+      <a
+        href="#install"
+        class="btn btn-primary btn-sm"
+      >
+        Установить
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-surface-border);
+    background-color: rgba(9, 30, 66, 0.85);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+  }
+
+  .logo-icon {
+    display: block;
+    border-radius: 8px;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color var(--transition-normal);
+  }
+
+  .nav-link:hover {
+    color: #ffffff;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 640px) {
+    .nav {
+      gap: 1rem;
+    }
+    .btn-sm {
+      display: none;
+    }
+  }
+</style>
